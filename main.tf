@@ -29,6 +29,7 @@ resource "null_resource" "shell" {
     working_dir = self.triggers.working_dir
 
     interpreter = [
+      "bash",
       "${abspath(path.module)}/run.sh",
       local.temporary_dir,
       self.triggers.random_uuid
