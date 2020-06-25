@@ -20,20 +20,13 @@ resource "null_resource" "shell" {
   }
 
   provisioner "local-exec" {
-    command = local.command_chomped
+    command = "${local.command_chomped} 2>\"${abspath(path.module)}/stderr.${self.triggers.random_uuid}\" >\"${abspath(path.module)}/stdout.${self.triggers.random_uuid}\"; echo $? >\"${abspath(path.module)}/exitstatus.${self.triggers.random_uuid}\""
 
     environment = zipmap(
       split("__TF_SHELL_RESOURCE_MAGIC_STRING", self.triggers.environment_keys),
       split("__TF_SHELL_RESOURCE_MAGIC_STRING", self.triggers.environment_values)
     )
     working_dir = self.triggers.working_dir
-
-    interpreter = [
-      "bash",
-      "${abspath(path.module)}/run.sh",
-      local.temporary_dir,
-      self.triggers.random_uuid
-    ]
   }
 
   provisioner "local-exec" {
