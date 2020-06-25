@@ -79,6 +79,7 @@ resource "null_resource" "contents_if_missing" {
   }
 
   triggers = {
+    hardcode= "just a value"
     stdout     = fileexists(local.stdout) ? chomp(file(local.stdout)) : null
     stderr     = fileexists(local.stderr) ? chomp(file(local.stderr)) : null
     exitstatus = fileexists(local.exitstatus) ? chomp(file(local.exitstatus)) : null
